@@ -11,8 +11,8 @@ class LiveWalletTest {
         // val esploraClient = EsploraClient("https://blockstream.info/testnet/api")
         val update = esploraClient.scan(wallet, 10uL, 1uL)
         wallet.applyUpdate(update)
-        println("Balance: ${wallet.getBalance().total()}")
+        println("Balance: ${wallet.getBalance().total}")
 
-        assert(wallet.getBalance().total() > 0uL)
+        assert(wallet.getBalance().total > 0uL)
     }
 }

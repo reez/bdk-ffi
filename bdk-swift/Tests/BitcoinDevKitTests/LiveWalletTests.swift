@@ -20,6 +20,6 @@ final class LiveWalletTests: XCTestCase {
         )
         try wallet.applyUpdate(update: update)
 
-        XCTAssertGreaterThan(wallet.getBalance().total(), UInt64(0))
+        XCTAssertGreaterThan(wallet.getBalance().total, UInt64(0))
     }
 }
