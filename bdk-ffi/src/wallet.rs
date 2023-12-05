@@ -107,6 +107,13 @@ impl Wallet {
             .get_tx(txid)
             .map(|tx| Arc::new(tx.tx_node.tx.clone().into()))
     }
+
+    pub fn transactions(&self) -> Vec<Arc<Transaction>> {
+        self.get_wallet()
+            .transactions()
+            .map(|tx| Arc::new(tx.tx_node.tx.clone().into()))
+            .collect()
+    }
 }
 
 pub struct SentAndReceivedValues {
