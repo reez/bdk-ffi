@@ -3,9 +3,10 @@ use crate::descriptor::Descriptor;
 use crate::{AddressIndex, AddressInfo, Network, ScriptAmount};
 use crate::{Balance, Script};
 use std::collections::HashSet;
+use std::str::FromStr;
 
 use bdk::bitcoin::blockdata::script::ScriptBuf as BdkScriptBuf;
-use bdk::bitcoin::OutPoint as BdkOutPoint;
+use bdk::bitcoin::{OutPoint as BdkOutPoint, Txid as BdkTxid};
 use bdk::wallet::Update as BdkUpdate;
 use bdk::{Error as BdkError, FeeRate};
 use bdk::{SignOptions, Wallet as BdkWallet};
@@ -96,6 +97,15 @@ impl Wallet {
     pub fn sent_and_received(&self, tx: &Transaction) -> SentAndReceivedValues {
         let (sent, received): (u64, u64) = self.get_wallet().sent_and_received(&tx.clone().into());
         SentAndReceivedValues { sent, received }
+    }
+
+    pub fn get_tx(&self, txid: String) -> Option<Arc<Transaction>> {
+        let txid = BdkTxid::from_str(&txid)
+            .map_err(|e| BdkError::Generic(e.to_string()))
+            .ok()?;
+        self.get_wallet()
+            .get_tx(txid)
+            .map(|tx| Arc::new(tx.tx_node.tx.clone().into()))
     }
 }
 

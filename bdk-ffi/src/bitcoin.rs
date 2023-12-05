@@ -6,7 +6,7 @@ use bdk::bitcoin::psbt::PartiallySignedTransaction as BdkPartiallySignedTransact
 use bdk::bitcoin::Address as BdkAddress;
 use bdk::bitcoin::OutPoint as BdkOutPoint;
 use bdk::bitcoin::Transaction as BdkTransaction;
-use bdk::bitcoin::Txid;
+use bdk::bitcoin::Txid as BdkTxid;
 use bdk::Error as BdkError;
 
 use std::io::Cursor;
@@ -137,6 +137,16 @@ impl From<Address> for BdkAddress {
 impl From<BdkAddress> for Address {
     fn from(address: BdkAddress) -> Self {
         Address { inner: address }
+    }
+}
+
+/// A Bitcoin transaction input.
+pub struct Txid(BdkTxid);
+
+impl Txid {
+    pub fn new(txid: String) -> Result<Self, BdkError> {
+        let txid = BdkTxid::from_str(&txid).map_err(|e| BdkError::Generic(e.to_string()))?;
+        Ok(Txid(txid))
     }
 }
 
@@ -304,7 +314,7 @@ pub struct OutPoint {
 impl From<&OutPoint> for BdkOutPoint {
     fn from(outpoint: &OutPoint) -> Self {
         BdkOutPoint {
-            txid: Txid::from_str(&outpoint.txid).unwrap(),
+            txid: BdkTxid::from_str(&outpoint.txid).unwrap(),
             vout: outpoint.vout,
         }
     }

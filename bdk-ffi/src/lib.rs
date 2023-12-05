@@ -11,6 +11,7 @@ use crate::bitcoin::OutPoint;
 use crate::bitcoin::PartiallySignedTransaction;
 use crate::bitcoin::Script;
 use crate::bitcoin::Transaction;
+use crate::bitcoin::Txid;
 use crate::descriptor::Descriptor;
 use crate::esplora::EsploraClient;
 use crate::keys::DerivationPath;

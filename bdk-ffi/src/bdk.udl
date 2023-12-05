@@ -97,6 +97,13 @@ interface Wallet {
   boolean sign(PartiallySignedTransaction psbt);
 
   SentAndReceivedValues sent_and_received([ByRef] Transaction tx);
+
+  Transaction? get_tx(string txid);
+};
+
+interface Txid {
+  [Throws=BdkError]
+  constructor(string txid);
 };
 
 interface Update {};
