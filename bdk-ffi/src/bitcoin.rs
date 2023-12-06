@@ -4,7 +4,9 @@ use bdk::bitcoin::consensus::Decodable;
 use bdk::bitcoin::network::constants::Network as BdkNetwork;
 use bdk::bitcoin::psbt::PartiallySignedTransaction as BdkPartiallySignedTransaction;
 use bdk::bitcoin::Address as BdkAddress;
+use bdk::bitcoin::OutPoint as BdkOutPoint;
 use bdk::bitcoin::Transaction as BdkTransaction;
+use bdk::bitcoin::Txid;
 use bdk::Error as BdkError;
 
 use std::io::Cursor;
@@ -74,12 +76,16 @@ pub struct Address {
 
 impl Address {
     pub fn new(address: String, network: Network) -> Result<Self, BdkError> {
+        let parsed_address = address
+            .parse::<bdk::bitcoin::Address<NetworkUnchecked>>()
+            .map_err(|e| BdkError::Generic(e.to_string()))?;
+
+        let network_checked_address = parsed_address
+            .require_network(network.into())
+            .map_err(|e| BdkError::Generic(e.to_string()))?;
+
         Ok(Address {
-            inner: address
-                .parse::<bdk::bitcoin::Address<NetworkUnchecked>>()
-                .unwrap() // TODO 11: Handle error correctly by rethrowing it as a BdkError
-                .require_network(network.into())
-                .map_err(|e| BdkError::Generic(e.to_string()))?,
+            inner: network_checked_address,
         })
     }
 
@@ -203,6 +209,12 @@ impl From<BdkTransaction> for Transaction {
     }
 }
 
+impl From<Transaction> for BdkTransaction {
+    fn from(tx: Transaction) -> Self {
+        tx.inner
+    }
+}
+
 pub struct PartiallySignedTransaction {
     pub(crate) inner: Mutex<BdkPartiallySignedTransaction>,
 }
@@ -276,6 +288,24 @@ impl From<BdkPartiallySignedTransaction> for PartiallySignedTransaction {
     fn from(psbt: BdkPartiallySignedTransaction) -> Self {
         PartiallySignedTransaction {
             inner: Mutex::new(psbt),
+        }
+    }
+}
+
+/// A reference to a transaction output.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct OutPoint {
+    /// The referenced transaction's txid.
+    pub txid: String,
+    /// The index of the referenced output in its transaction's vout.
+    pub vout: u32,
+}
+
+impl From<&OutPoint> for BdkOutPoint {
+    fn from(outpoint: &OutPoint) -> Self {
+        BdkOutPoint {
+            txid: Txid::from_str(&outpoint.txid).unwrap(),
+            vout: outpoint.vout,
         }
     }
 }
