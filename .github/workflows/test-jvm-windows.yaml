@@ -1,0 +1,28 @@
+name: Test bdk-jvm-windows
+on: [workflow_dispatch]
+
+jobs:
+
+  build-windows-native-lib:
+    name: "Create Windows native binaries"
+    runs-on: windows-2022
+    steps:
+      - name: "Checkout publishing branch"
+        uses: actions/checkout@v3
+
+      - name: "Set up JDK"
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: "Build bdk-jvm library"
+        run: |
+          cd bdk-jvm
+          bash ./scripts/build-windows-x86_64.sh
+
+      - name: "Upload Windows native libraries for reuse in publishing job"
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact-windows
+          path: D:\a\bdk-ffi\bdk-ffi\bdk-jvm\lib\src\main\resources\
