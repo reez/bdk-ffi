@@ -437,6 +437,8 @@ interface Wallet {
 
   [Throws=SqliteError]
   boolean persist(Connection connection);
+
+  ExtendedDescriptor public_descriptor(KeychainKind keychain);
 };
 
 interface Update {};
@@ -581,7 +583,11 @@ interface Descriptor {
   constructor([ByRef] DescriptorPublicKey public_key, string fingerprint, KeychainKind keychain, Network network);
 
   string to_string_with_secret();
+
+  ExtendedDescriptor to_extended_descriptor();
 };
+
+interface ExtendedDescriptor {};
 
 // ------------------------------------------------------------------------
 // bdk_esplora crate

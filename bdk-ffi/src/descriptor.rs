@@ -16,6 +16,7 @@ use bdk_wallet::KeychainKind;
 
 use std::fmt::Display;
 use std::str::FromStr;
+use std::sync::Arc;
 
 #[derive(Debug)]
 pub struct Descriptor {
@@ -265,6 +266,10 @@ impl Descriptor {
         let descriptor = &self.extended_descriptor;
         let key_map = &self.key_map;
         descriptor.to_string_with_secret(key_map)
+    }
+
+    pub(crate) fn to_extended_descriptor(&self) -> Arc<ExtendedDescriptor> {
+        self.extended_descriptor.clone().into()
     }
 }
 

@@ -71,6 +71,7 @@ use bitcoin_ffi::Network;
 use bitcoin_ffi::OutPoint;
 use bitcoin_ffi::Script;
 
+use bdk_wallet::descriptor::ExtendedDescriptor;
 use bdk_wallet::keys::bip39::WordCount;
 use bdk_wallet::tx_builder::ChangeSpendPolicy;
 use bdk_wallet::ChangeSet;

@@ -16,6 +16,7 @@ use bdk_wallet::bitcoin::{Network, Txid};
 use bdk_wallet::rusqlite::Connection as BdkConnection;
 use bdk_wallet::{KeychainKind, PersistedWallet, SignOptions, Wallet as BdkWallet};
 
+use bdk_wallet::descriptor::ExtendedDescriptor;
 use std::borrow::BorrowMut;
 use std::str::FromStr;
 use std::sync::{Arc, Mutex, MutexGuard};
@@ -233,5 +234,10 @@ impl Wallet {
             .map_err(|e| SqliteError::Sqlite {
                 rusqlite_error: e.to_string(),
             })
+    }
+
+    pub fn public_descriptor(&self, keychain: KeychainKind) -> Arc<ExtendedDescriptor> {
+        let extended_descriptor = self.get_wallet().public_descriptor(keychain).clone();
+        Arc::new(extended_descriptor)
     }
 }
