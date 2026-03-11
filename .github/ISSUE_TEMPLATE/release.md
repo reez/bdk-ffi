@@ -54,7 +54,6 @@ git push upstream v0.6.0
 16. - [ ] Build the Rust API docs and publish them to the repo's GitHub Pages.
 ```shell
 cd bdk-ffi/
-# Temporarily make all modules public in the src/lib.rs file
 bash scripts/deploy-docs.sh
 ```
 17. - [ ] Aggregate all the changelog notices from the PRs and add them to the changelog file. PR that.
