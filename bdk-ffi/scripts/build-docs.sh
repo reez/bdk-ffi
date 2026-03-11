@@ -19,21 +19,21 @@ cleanup() {
 trap cleanup EXIT
 
 # Rustdoc only emits module pages for publicly reachable modules. For the docs
-# build, temporarily rewrite the top-level `mod foo;` lines into `pub mod foo;`.
+# build, temporarily rewrite the leading top-level `mod foo;` block in
+# `src/lib.rs` into `pub mod foo;` declarations.
 awk '
-  BEGIN {
-    pattern = "^(bitcoin|descriptor|electrum|error|esplora|keys|kyoto|macros|store|tx_builder|types|wallet)$"
-  }
   {
-    if ($0 ~ /^mod [a-z_]+;$/) {
-      module = $0
-      sub(/^mod /, "", module)
-      sub(/;$/, "", module)
-      if (module ~ pattern) {
-        print "pub mod " module ";"
-        next
-      }
+    if (!block_done && $0 ~ /^mod [a-z_]+;$/) {
+      in_module_block = 1
+      print "pub " $0
+      next
     }
+
+    if (in_module_block && $0 !~ /^mod [a-z_]+;$/) {
+      in_module_block = 0
+      block_done = 1
+    }
+
     print
   }
 ' "${tmp_lib_rs}" > "${lib_rs}"
