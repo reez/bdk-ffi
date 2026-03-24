@@ -1249,6 +1249,27 @@ impl ChangeSet {
     }
 
     #[uniffi::constructor]
+    pub fn from_aggregate_with_locked_outpoints(
+        descriptor: Option<Arc<Descriptor>>,
+        change_descriptor: Option<Arc<Descriptor>>,
+        network: Option<bdk_wallet::bitcoin::Network>,
+        local_chain: LocalChainChangeSet,
+        tx_graph: TxGraphChangeSet,
+        indexer: IndexerChangeSet,
+        locked_outpoints: HashMap<Arc<HashableOutPoint>, bool>,
+    ) -> Self {
+        Self {
+            descriptor,
+            change_descriptor,
+            network,
+            local_chain,
+            tx_graph,
+            indexer,
+            locked_outpoints: LockedOutpointsChangeSet(locked_outpoints),
+        }
+    }
+
+    #[uniffi::constructor]
     pub fn from_descriptor_and_network(
         descriptor: Option<Arc<Descriptor>>,
         change_descriptor: Option<Arc<Descriptor>>,
@@ -1290,6 +1311,17 @@ impl ChangeSet {
         changeset.into()
     }
 
+    /// Start a wallet `ChangeSet` from locked outpoint changes.
+    #[uniffi::constructor]
+    pub fn from_locked_outpoints_changeset(
+        locked_outpoints_changeset: HashMap<Arc<HashableOutPoint>, bool>,
+    ) -> Self {
+        let changeset: bdk_wallet::ChangeSet =
+            BdkLockedOutpointsChangeSet::from(LockedOutpointsChangeSet(locked_outpoints_changeset))
+                .into();
+        changeset.into()
+    }
+
     /// Build a `ChangeSet` by merging together two `ChangeSet`.
     #[uniffi::constructor]
     pub fn from_merge(left: Arc<ChangeSet>, right: Arc<ChangeSet>) -> Self {
@@ -1327,6 +1359,11 @@ impl ChangeSet {
     /// Get the changes to the indexer.
     pub fn indexer_changeset(&self) -> IndexerChangeSet {
         self.indexer.clone()
+    }
+
+    /// Get the changes to locked outpoints.
+    pub fn locked_outpoints_changeset(&self) -> HashMap<Arc<HashableOutPoint>, bool> {
+        self.locked_outpoints.0.clone()
     }
 }
 
