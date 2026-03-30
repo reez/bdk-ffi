@@ -21,3 +21,13 @@ The wallet database `single_descriptor_wallet.sqlite3` is used for testing. This
 - Was built using 1 descriptor
 - Has revealed address 0
 - Was build using the MNEMONIC_AWESOME mnemonic
+
+## Wallet 3
+
+The wallet database `wallet_pre_v1.sqlite3` is used for testing. This wallet:
+
+- Is a Regtest wallet
+- Was built using 2 descriptors
+- Has revealed the first 8 addresses on the external keychain (last revealed index is 7)
+- Has revealed the first address on the internal keychain (last revealed index is 0)
+- The descriptors are BIP86 descriptors with the MNEMONIC_AWESOME mnemonic
