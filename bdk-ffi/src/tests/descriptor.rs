@@ -2,8 +2,9 @@ use crate::bitcoin::Network;
 use crate::descriptor::Descriptor;
 use crate::error::DescriptorError;
 use crate::keys::{DerivationPath, DescriptorSecretKey, Mnemonic};
+use crate::types::KeychainKind;
+
 use assert_matches::assert_matches;
-use bdk_wallet::KeychainKind;
 
 fn get_descriptor_secret_key() -> DescriptorSecretKey {
     let mnemonic = Mnemonic::from_string("chaos fabric time speed sponsor all flat solution wisdom trophy crack object robot pave observe combine where aware bench orient secret primary cable detect".to_string()).unwrap();

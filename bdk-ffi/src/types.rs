@@ -43,7 +43,7 @@ use bdk_esplora::esplora_client::api::OutputStatus as BdkOutputStatus;
 use bdk_esplora::esplora_client::api::Tx as BdkTx;
 use bdk_esplora::esplora_client::api::TxStatus as BdkTxStatus;
 
-type KeychainKind = bdk_wallet::KeychainKind;
+pub(crate) type KeychainKind = bdk_wallet::KeychainKind;
 
 /// Types of keychains.
 #[uniffi::remote(Enum)]

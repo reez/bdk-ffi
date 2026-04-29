@@ -5,6 +5,7 @@ use crate::error::DescriptorError;
 use crate::error::MiniscriptError;
 use crate::keys::DescriptorPublicKey;
 use crate::keys::DescriptorSecretKey;
+use crate::types::KeychainKind;
 
 use bdk_wallet::bitcoin::bip32::Fingerprint;
 use bdk_wallet::bitcoin::key::Secp256k1;
@@ -18,7 +19,6 @@ use bdk_wallet::template::{
     Bip44, Bip44Public, Bip49, Bip49Public, Bip84, Bip84Public, Bip86, Bip86Public,
     DescriptorTemplate,
 };
-use bdk_wallet::KeychainKind;
 
 use std::fmt::Display;
 use std::str::FromStr;

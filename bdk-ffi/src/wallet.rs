@@ -7,14 +7,14 @@ use crate::error::{
 use crate::store::{PersistenceType, Persister};
 use crate::types::{
     AddressInfo, Balance, BlockId, CanonicalTx, ChangeSet, EvictedTx, FullScanRequestBuilder,
-    KeychainAndIndex, LocalOutput, Policy, SentAndReceivedValues, SignOptions, SyncRequestBuilder,
-    UnconfirmedTx, Update, WalletEvent,
+    KeychainAndIndex, KeychainKind, LocalOutput, Policy, SentAndReceivedValues, SignOptions,
+    SyncRequestBuilder, UnconfirmedTx, Update, WalletEvent,
 };
 
 use bdk_wallet::bitcoin::Network;
 #[allow(deprecated)]
 use bdk_wallet::signer::SignOptions as BdkSignOptions;
-use bdk_wallet::{KeychainKind, PersistedWallet, Wallet as BdkWallet};
+use bdk_wallet::{PersistedWallet, Wallet as BdkWallet};
 
 use std::ops::DerefMut;
 use std::sync::{Arc, Mutex, MutexGuard};

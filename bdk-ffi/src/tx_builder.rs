@@ -1,5 +1,6 @@
 use crate::bitcoin::{Amount, FeeRate, Input, OutPoint, Psbt, Script, Txid};
 use crate::error::{AddForeignUtxoError, CreateTxError};
+use crate::types::KeychainKind;
 use crate::types::{LockTime, ScriptAmount};
 use crate::wallet::Wallet;
 
@@ -10,7 +11,6 @@ use bdk_wallet::bitcoin::script::PushBytesBuf;
 use bdk_wallet::bitcoin::Psbt as BdkPsbt;
 use bdk_wallet::bitcoin::ScriptBuf as BdkScriptBuf;
 use bdk_wallet::bitcoin::{OutPoint as BdkOutPoint, Sequence, Weight as BdkWeight};
-use bdk_wallet::KeychainKind;
 
 use std::collections::BTreeMap;
 use std::collections::HashMap;

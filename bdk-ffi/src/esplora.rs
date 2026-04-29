@@ -5,6 +5,7 @@ use crate::bitcoin::Header;
 use crate::bitcoin::Transaction;
 use crate::bitcoin::Txid;
 use crate::error::EsploraError;
+use crate::types::KeychainKind;
 use crate::types::Tx;
 use crate::types::TxStatus;
 use crate::types::Update;
@@ -17,7 +18,6 @@ use bdk_wallet::chain::spk_client::FullScanRequest as BdkFullScanRequest;
 use bdk_wallet::chain::spk_client::FullScanResponse as BdkFullScanResponse;
 use bdk_wallet::chain::spk_client::SyncRequest as BdkSyncRequest;
 use bdk_wallet::chain::spk_client::SyncResponse as BdkSyncResponse;
-use bdk_wallet::KeychainKind;
 use bdk_wallet::Update as BdkUpdate;
 
 use std::collections::{BTreeMap, HashMap};
