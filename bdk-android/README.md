@@ -68,17 +68,6 @@ bash ./scripts/build-<your-local-architecture>.sh
 
 ```shell
 cd bdk-android
-./gradlew publishToMavenLocal -P localBuild
-```
-
-Note that the command above assumes you don't need the local libraries to be signed. If you do wish to sign them, simply set your `~/.gradle/gradle.properties` signing key values like so:
-```properties
-signing.gnupg.keyName=<YOUR_GNUPG_ID>
-signing.gnupg.passphrase=<YOUR_GNUPG_PASSPHRASE>
-```
-
-and use the `publishToMavenLocal` task without the `localBuild` flag:
-```shell
 ./gradlew publishToMavenLocal
 ```
 
