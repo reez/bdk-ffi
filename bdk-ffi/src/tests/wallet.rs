@@ -1,4 +1,4 @@
-use crate::bitcoin::Network;
+use crate::bitcoin::{Network, NetworkKind};
 use crate::descriptor::Descriptor;
 use crate::store::Persister;
 use crate::wallet::Wallet;
@@ -13,15 +13,15 @@ const TWO_PATH_DESCRIPTOR: &str = "wpkh([9a6a2580/84'/1'/0']tpubDDnGNapGEY6AZAdQ
 const EXPECTED_FIRST_ADDRESS: &str = "tb1qhjys9wxlfykmte7ftryptx975uqgd6kcm6a7z4";
 
 fn external_descriptor() -> Arc<Descriptor> {
-    Arc::new(Descriptor::new(EXTERNAL_DESCRIPTOR.to_string(), Network::Signet).unwrap())
+    Arc::new(Descriptor::new(EXTERNAL_DESCRIPTOR.to_string(), NetworkKind::Test).unwrap())
 }
 
 fn internal_descriptor() -> Arc<Descriptor> {
-    Arc::new(Descriptor::new(INTERNAL_DESCRIPTOR.to_string(), Network::Signet).unwrap())
+    Arc::new(Descriptor::new(INTERNAL_DESCRIPTOR.to_string(), NetworkKind::Test).unwrap())
 }
 
 fn two_path_descriptor() -> Arc<Descriptor> {
-    Arc::new(Descriptor::new(TWO_PATH_DESCRIPTOR.to_string(), Network::Signet).unwrap())
+    Arc::new(Descriptor::new(TWO_PATH_DESCRIPTOR.to_string(), NetworkKind::Test).unwrap())
 }
 
 fn build_wallet() -> Wallet {

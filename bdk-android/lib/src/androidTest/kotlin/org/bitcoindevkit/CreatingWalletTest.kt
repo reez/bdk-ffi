@@ -57,7 +57,7 @@ class CreatingWalletTest {
     fun createWalletWithMultipathDescriptor() {
         val multipathDescriptor = Descriptor(
             "wpkh([9a6a2580/84'/0'/0']xpub6DEzNop46vmxR49zYWFnMwmEfawSNmAMf6dLH5YKDY463twtvw1XD7ihwJRLPRGZJz799VPFzXHpZu6WdhT29WnaeuChS6aZHZPFmqczR5K/<0;1>/*)",
-            Network.BITCOIN
+            NetworkKind.MAIN
         )
 
         Wallet.createFromTwoPathDescriptor(
@@ -73,7 +73,7 @@ class CreatingWalletTest {
         assertFails {
             Descriptor(
                 descriptor = "tprv8ZgxMBicQKsPf2qfrEygW6fdYseJDDrVnDv26PH5BHdvSuG6ecCbHqLVof9yZcMoM31z9ur3tTYbSnr1WBqbGX97CbXcmp5H6qeMpyvx35B/<0;1>/*)",
-                Network.TESTNET
+                NetworkKind.TEST
             )
         }
     }

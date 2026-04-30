@@ -1,4 +1,4 @@
-use crate::bitcoin::ChildNumber;
+use crate::bitcoin::{ChildNumber, NetworkKind};
 use crate::error::{Bip32Error, Bip39Error, DescriptorKeyError};
 use crate::{impl_from_core_type, impl_into_core_type};
 
@@ -7,7 +7,6 @@ use bdk_wallet::bitcoin::bip32::DerivationPath as BdkDerivationPath;
 use bdk_wallet::bitcoin::key::Secp256k1;
 use bdk_wallet::bitcoin::secp256k1::rand;
 use bdk_wallet::bitcoin::secp256k1::rand::Rng;
-use bdk_wallet::bitcoin::Network;
 use bdk_wallet::keys::bip39::WordCount;
 use bdk_wallet::keys::bip39::{Language, Mnemonic as BdkMnemonic};
 use bdk_wallet::keys::{
@@ -142,12 +141,12 @@ pub struct DescriptorSecretKey(pub(crate) BdkDescriptorSecretKey);
 impl DescriptorSecretKey {
     /// Construct a secret descriptor using a mnemonic.
     #[uniffi::constructor]
-    pub fn new(network: Network, mnemonic: &Mnemonic, password: Option<String>) -> Self {
+    pub fn new(network_kind: NetworkKind, mnemonic: &Mnemonic, password: Option<String>) -> Self {
         let mnemonic = mnemonic.0.clone();
         let xkey: ExtendedKey = (mnemonic, password).into_extended_key().unwrap();
         let descriptor_secret_key = BdkDescriptorSecretKey::XPrv(DescriptorXKey {
             origin: None,
-            xkey: xkey.into_xprv(network.into()).unwrap(),
+            xkey: xkey.into_xprv(network_kind).unwrap(),
             derivation_path: BdkDerivationPath::master(),
             wildcard: Wildcard::Unhardened,
         });

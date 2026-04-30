@@ -5,7 +5,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withTimeout
 import org.junit.runner.RunWith
 import org.kotlinbitcointools.regtesttoolbox.regenv.RegEnv

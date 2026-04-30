@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased](https://github.com/bitcoindevkit/bdk-ffi/compare/v2.3.0...HEAD)
 
 ### Added
+
 - Expose miniscript `has_wildcard` and `sanity_check` methods on `Descriptor` type #945
 - Expose `new_wsh_sortedmulti` and `new_pk` methods on `Descriptor` type #949
 - Expose `new_sh_sortedmulti`, `new_sh_wsh_sortedmulti`, `new_pkh`, `new_wpkh`, `new_sh_wpkh` methods on `Descriptor` type #973
@@ -15,6 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Expose locked outpoint wallet APIs and locked outpoint persistence in `ChangeSet` #971
 - Expose transaction builder controls for sighash, transaction ordering, and adding foreign UTXOs with explicit sequence values #971
 - Expose `Persister::get_pre_v1_wallet_keychains` for pre-v1 SQLite wallet migration support #971
+- Expose `NetworkKind` type #986
+
+### Breaking
+
+- `Descriptor` and `DescriptorSecretKey` constructors now require a `NetworkKind` #986
+
+[#986]: https://github.com/bitcoindevkit/bdk-ffi/pull/986
 
 ## [v2.3.0]
 

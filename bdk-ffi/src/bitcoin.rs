@@ -9,6 +9,7 @@ use crate::{impl_from_core_type, impl_hash_like, impl_into_core_type};
 use bdk_wallet::bitcoin::address::NetworkChecked;
 use bdk_wallet::bitcoin::address::NetworkUnchecked;
 use bdk_wallet::bitcoin::address::{Address as BdkAddress, AddressData as BdkAddressData};
+use bdk_wallet::bitcoin::bip32::ChildNumber as BdkChildNumber;
 use bdk_wallet::bitcoin::blockdata::block::Block as BdkBlock;
 use bdk_wallet::bitcoin::blockdata::block::Header as BdkHeader;
 use bdk_wallet::bitcoin::consensus::encode::deserialize;
@@ -20,8 +21,6 @@ use bdk_wallet::bitcoin::io::Cursor;
 use bdk_wallet::bitcoin::psbt::Input as BdkInput;
 use bdk_wallet::bitcoin::psbt::Output as BdkOutput;
 use bdk_wallet::bitcoin::secp256k1::Secp256k1;
-
-use bdk_wallet::bitcoin::bip32::ChildNumber as BdkChildNumber;
 use bdk_wallet::bitcoin::taproot::LeafNode as BdkLeafNode;
 use bdk_wallet::bitcoin::taproot::NodeInfo as BdkNodeInfo;
 use bdk_wallet::bitcoin::taproot::TapTree as BdkTapTree;
@@ -51,6 +50,16 @@ use std::sync::{Arc, Mutex};
 
 pub type DescriptorType = bdk_wallet::miniscript::descriptor::DescriptorType;
 pub type Network = bdk_wallet::bitcoin::Network;
+pub(crate) type NetworkKind = bdk_wallet::bitcoin::NetworkKind;
+
+/// What kind of network we are on.
+#[uniffi::remote(Enum)]
+pub enum NetworkKind {
+    /// The Bitcoin mainnet network.
+    Main,
+    /// Some kind of testnet network.
+    Test,
+}
 
 /// A reference to an unspent output by TXID and output index.
 #[derive(Debug, Clone, Eq, PartialEq, std::hash::Hash, uniffi:: Record)]

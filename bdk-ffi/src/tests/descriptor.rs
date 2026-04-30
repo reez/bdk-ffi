@@ -1,4 +1,4 @@
-use crate::bitcoin::Network;
+use crate::bitcoin::{Network, NetworkKind};
 use crate::descriptor::Descriptor;
 use crate::error::DescriptorError;
 use crate::keys::{DerivationPath, DescriptorSecretKey, Mnemonic};
@@ -8,7 +8,7 @@ use assert_matches::assert_matches;
 
 fn get_descriptor_secret_key() -> DescriptorSecretKey {
     let mnemonic = Mnemonic::from_string("chaos fabric time speed sponsor all flat solution wisdom trophy crack object robot pave observe combine where aware bench orient secret primary cable detect".to_string()).unwrap();
-    DescriptorSecretKey::new(Network::Testnet, &mnemonic, None)
+    DescriptorSecretKey::new(NetworkKind::Test, &mnemonic, None)
 }
 
 #[test]
@@ -36,40 +36,40 @@ fn test_descriptor_templates() {
         .as_public();
     // Public 86: [d1d04177/86'/1'/0']tpubDCJzjbcGbdEfXMWaL6QmgVmuSfXkrue7m2YNoacWwyc7a2XjXaKojRqNEbo41CFL3PyYmKdhwg2fkGpLX4SQCbQjCGxAkWHJTw9WEeenrJb/*
     let template_private_44 =
-        Descriptor::new_bip44(&master, KeychainKind::External, Network::Testnet);
+        Descriptor::new_bip44(&master, KeychainKind::External, NetworkKind::Test);
     let template_private_49 =
-        Descriptor::new_bip49(&master, KeychainKind::External, Network::Testnet);
+        Descriptor::new_bip49(&master, KeychainKind::External, NetworkKind::Test);
     let template_private_84 =
-        Descriptor::new_bip84(&master, KeychainKind::External, Network::Testnet);
+        Descriptor::new_bip84(&master, KeychainKind::External, NetworkKind::Test);
     let template_private_86 =
-        Descriptor::new_bip86(&master, KeychainKind::External, Network::Testnet);
+        Descriptor::new_bip86(&master, KeychainKind::External, NetworkKind::Test);
     // the extended public keys are the same when creating them manually as they are with the templates
     let template_public_44 = Descriptor::new_bip44_public(
         &handmade_public_44,
         "d1d04177".to_string(),
         KeychainKind::External,
-        Network::Testnet,
+        NetworkKind::Test,
     )
     .unwrap();
     let template_public_49 = Descriptor::new_bip49_public(
         &handmade_public_49,
         "d1d04177".to_string(),
         KeychainKind::External,
-        Network::Testnet,
+        NetworkKind::Test,
     )
     .unwrap();
     let template_public_84 = Descriptor::new_bip84_public(
         &handmade_public_84,
         "d1d04177".to_string(),
         KeychainKind::External,
-        Network::Testnet,
+        NetworkKind::Test,
     )
     .unwrap();
     let template_public_86 = Descriptor::new_bip86_public(
         &handmade_public_86,
         "d1d04177".to_string(),
         KeychainKind::External,
-        Network::Testnet,
+        NetworkKind::Test,
     )
     .unwrap();
     // when using a public key, both to_string and to_string_private return the same string
@@ -109,8 +109,8 @@ fn test_descriptor_templates() {
 }
 #[test]
 fn test_descriptor_from_string() {
-    let descriptor1 = Descriptor::new("wpkh(tprv8hwWMmPE4BVNxGdVt3HhEERZhondQvodUY7Ajyseyhudr4WabJqWKWLr4Wi2r26CDaNCQhhxEftEaNzz7dPGhWuKFU4VULesmhEfZYyBXdE/0/*)".to_string(), Network::Testnet);
-    let descriptor2 = Descriptor::new("wpkh(tprv8hwWMmPE4BVNxGdVt3HhEERZhondQvodUY7Ajyseyhudr4WabJqWKWLr4Wi2r26CDaNCQhhxEftEaNzz7dPGhWuKFU4VULesmhEfZYyBXdE/0/*)".to_string(), Network::Bitcoin);
+    let descriptor1 = Descriptor::new("wpkh(tprv8hwWMmPE4BVNxGdVt3HhEERZhondQvodUY7Ajyseyhudr4WabJqWKWLr4Wi2r26CDaNCQhhxEftEaNzz7dPGhWuKFU4VULesmhEfZYyBXdE/0/*)".to_string(), NetworkKind::Test);
+    let descriptor2 = Descriptor::new("wpkh(tprv8hwWMmPE4BVNxGdVt3HhEERZhondQvodUY7Ajyseyhudr4WabJqWKWLr4Wi2r26CDaNCQhhxEftEaNzz7dPGhWuKFU4VULesmhEfZYyBXdE/0/*)".to_string(), NetworkKind::Main);
     // Creating a Descriptor using an extended key that doesn't match the network provided will throw a DescriptorError::Key with inner InvalidNetwork error
     assert!(descriptor1.is_ok());
     assert_matches!(descriptor2.unwrap_err(), DescriptorError::Key { .. });
@@ -128,7 +128,7 @@ fn test_new_bip84_public_invalid_fingerprint() {
         &public_84,
         "not-a-fingerprint".to_string(),
         KeychainKind::External,
-        Network::Testnet,
+        NetworkKind::Test,
     )
     .unwrap_err();
 
@@ -140,7 +140,7 @@ fn test_max_weight_to_satisfy() {
     // Test P2WPKH descriptor using standard test descriptor
     let descriptor = Descriptor::new(
         "wpkh(tprv8ZgxMBicQKsPf2qfrEygW6fdYseJDDrVnDv26PH5BHdvSuG6ecCbHqLVof9yZcMoM31z9ur3tTYbSnr1WBqbGX97CbXcmp5H6qeMpyvx35B/84h/1h/1h/0/*)".to_string(),
-        Network::Testnet
+        NetworkKind::Test
     ).unwrap();
 
     let weight = descriptor.max_weight_to_satisfy().unwrap();
@@ -154,7 +154,7 @@ fn test_descriptor_derive_address() {
     let descriptor = Descriptor::new_bip84(
         &get_descriptor_secret_key(),
         KeychainKind::External,
-        Network::Testnet,
+        NetworkKind::Test,
     );
 
     let derived = descriptor
@@ -176,7 +176,7 @@ fn test_descriptor_derive_address() {
 fn test_descriptor_derive_address_multipath_error() {
     let descriptor = Descriptor::new(
         "wpkh([9a6a2580/84'/1'/0']tpubDDnGNapGEY6AZAdQbfRJgMg9fvz8pUBrLwvyvUqEgcUfgzM6zc2eVK4vY9x9L5FJWdX8WumXuLEDV5zDZnTfbn87vLe9XceCFwTu9so9Kks/<0;1>/*)".to_string(),
-        Network::Testnet,
+        NetworkKind::Test,
     )
     .expect("multipath descriptor parses");
 

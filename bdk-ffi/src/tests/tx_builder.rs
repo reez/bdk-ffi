@@ -1,4 +1,4 @@
-use crate::bitcoin::{Amount, Input, Network, OutPoint, Script, TxOut};
+use crate::bitcoin::{Amount, Input, Network, NetworkKind, OutPoint, Script, TxOut};
 use crate::descriptor::Descriptor;
 use crate::error::SighashParseError;
 use crate::esplora::EsploraClient;
@@ -72,8 +72,8 @@ fn create_and_sync_wallet() -> Wallet {
         "tprv8ZgxMBicQKsPeitVUz3s6cfyCECovNP7t82FaKPa4UKqV1kssWcXgLkMDjzDbgG9GWoza4pL7z727QitfzkiwX99E1Has3T3a1MKHvYWmQZ"
     );
     let wallet = Wallet::new(
-        Arc::new(Descriptor::new(external_descriptor, Network::Signet).unwrap()),
-        Arc::new(Descriptor::new(internal_descriptor, Network::Signet).unwrap()),
+        Arc::new(Descriptor::new(external_descriptor, NetworkKind::Test).unwrap()),
+        Arc::new(Descriptor::new(internal_descriptor, NetworkKind::Test).unwrap()),
         Network::Signet,
         Arc::new(Persister::new_in_memory().unwrap()),
         25,

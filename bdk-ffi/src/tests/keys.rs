@@ -1,11 +1,11 @@
-use crate::bitcoin::Network;
+use crate::bitcoin::NetworkKind;
 use crate::error::DescriptorKeyError;
 use crate::keys::{DerivationPath, DescriptorPublicKey, DescriptorSecretKey, Mnemonic};
 use std::sync::Arc;
 
 fn get_inner() -> DescriptorSecretKey {
     let mnemonic = Mnemonic::from_string("chaos fabric time speed sponsor all flat solution wisdom trophy crack object robot pave observe combine where aware bench orient secret primary cable detect".to_string()).unwrap();
-    DescriptorSecretKey::new(Network::Testnet, &mnemonic, None)
+    DescriptorSecretKey::new(NetworkKind::Test, &mnemonic, None)
 }
 
 fn derive_dsk(
