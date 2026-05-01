@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Expose miniscript `has_wildcard` and `sanity_check` methods on `Descriptor` type #945
 - Expose `new_wsh_sortedmulti` and `new_pk` methods on `Descriptor` type #949
 - Expose `new_sh_sortedmulti`, `new_sh_wsh_sortedmulti`, `new_pkh`, `new_wpkh`, `new_sh_wpkh` methods on `Descriptor` type #973
+- Expose wallet event helpers `Wallet::apply_unconfirmed_txs_events` and `Wallet::apply_evicted_txs_events` #971
+- Expose wallet scan/sync helpers `Wallet::start_full_scan_at`, `Wallet::start_sync_with_revealed_spks_at`, and `Wallet::checkpoints` #971
+- Expose locked outpoint wallet APIs and locked outpoint persistence in `ChangeSet` #971
+- Expose transaction builder controls for sighash, transaction ordering, and adding foreign UTXOs with explicit sequence values #971
+- Expose `Persister::get_pre_v1_wallet_keychains` for pre-v1 SQLite wallet migration support #971
 
 ## [v2.3.0]
 
