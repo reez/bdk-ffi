@@ -16,6 +16,7 @@ use bdk_wallet::keys::{
 use bdk_wallet::miniscript::descriptor::{DescriptorXKey, Wildcard};
 use bdk_wallet::miniscript::BareCtx;
 
+use crate::types::WildcardType;
 use std::convert::TryFrom;
 use std::fmt::Display;
 use std::str::FromStr;
@@ -132,14 +133,14 @@ impl Display for DerivationPath {
 impl_from_core_type!(BdkDerivationPath, DerivationPath);
 impl_into_core_type!(DerivationPath, BdkDerivationPath);
 
-/// A descriptor containing secret data.
+/// The descriptor secret key, either a single private key or an xprv.
 #[derive(Debug, uniffi::Object)]
 #[uniffi::export(Debug, Display)]
 pub struct DescriptorSecretKey(pub(crate) BdkDescriptorSecretKey);
 
 #[uniffi::export]
 impl DescriptorSecretKey {
-    /// Construct a secret descriptor using a mnemonic.
+    /// Construct a secret descriptor key using a mnemonic.
     #[uniffi::constructor]
     pub fn new(network_kind: NetworkKind, mnemonic: &Mnemonic, password: Option<String>) -> Self {
         let mnemonic = mnemonic.0.clone();
@@ -148,7 +149,7 @@ impl DescriptorSecretKey {
             origin: None,
             xkey: xkey.into_xprv(network_kind).unwrap(),
             derivation_path: BdkDerivationPath::master(),
-            wildcard: Wildcard::Unhardened,
+            wildcard: Wildcard::None,
         });
         Self(descriptor_secret_key)
     }
@@ -202,6 +203,53 @@ impl DescriptorSecretKey {
                     wildcard: descriptor_x_key.wildcard,
                 });
                 Ok(Arc::new(Self(extended_descriptor_secret_key)))
+            }
+            BdkDescriptorSecretKey::MultiXPrv(_) => Err(DescriptorKeyError::InvalidKeyType),
+        }
+    }
+
+    /// Add a wildcard derivation step (unhardened `*` or hardened `*h`) to this extended private key.
+    ///
+    /// If the key already has the same wildcard type, it is returned unchanged. Returns an error
+    /// if the key is not a single xprv, or if the key already has a wildcard of a different type.
+    pub fn add_wildcard(
+        &self,
+        wildcard_type: WildcardType,
+    ) -> Result<Arc<Self>, DescriptorKeyError> {
+        let descriptor_secret_key = &self.0;
+        match descriptor_secret_key {
+            BdkDescriptorSecretKey::Single(_) => Err(DescriptorKeyError::InvalidKeyType),
+            BdkDescriptorSecretKey::XPrv(descriptor_x_key) => {
+                let same_wildcard = (descriptor_x_key.wildcard == Wildcard::Unhardened
+                    && wildcard_type == WildcardType::Unhardened)
+                    || (descriptor_x_key.wildcard == Wildcard::Hardened
+                        && wildcard_type == WildcardType::Hardened);
+
+                // If there is a wildcard already present and it's of the same type as the one requested,
+                // return the same DescriptorSecretKey
+                if same_wildcard {
+                    let descriptor_secret_key_with_wildcard =
+                        BdkDescriptorSecretKey::XPrv(DescriptorXKey {
+                            origin: descriptor_x_key.origin.clone(),
+                            xkey: descriptor_x_key.xkey,
+                            derivation_path: descriptor_x_key.derivation_path.clone(),
+                            wildcard: descriptor_x_key.wildcard,
+                        });
+                    Ok(Arc::new(Self(descriptor_secret_key_with_wildcard)))
+                } else if descriptor_x_key.wildcard == Wildcard::None {
+                    // If the descriptor doesn't have a wildcard, add the requested wildcard
+                    let descriptor_secret_key_with_wildcard =
+                        BdkDescriptorSecretKey::XPrv(DescriptorXKey {
+                            origin: descriptor_x_key.origin.clone(),
+                            xkey: descriptor_x_key.xkey,
+                            derivation_path: descriptor_x_key.derivation_path.clone(),
+                            wildcard: wildcard_type.into(),
+                        });
+                    Ok(Arc::new(Self(descriptor_secret_key_with_wildcard)))
+                } else {
+                    // If the descriptor already has a wildcard of a different type, return an error
+                    Err(DescriptorKeyError::CannotChangeWildcardType)
+                }
             }
             BdkDescriptorSecretKey::MultiXPrv(_) => Err(DescriptorKeyError::InvalidKeyType),
         }
@@ -295,6 +343,46 @@ impl DescriptorPublicKey {
                     wildcard: descriptor_x_key.wildcard,
                 });
                 Ok(Arc::new(Self(extended_descriptor_public_key)))
+            }
+            BdkDescriptorPublicKey::MultiXPub(_) => Err(DescriptorKeyError::InvalidKeyType),
+        }
+    }
+
+    /// Add an unhardened wildcard derivation step (`*`) to this extended public key.
+    ///
+    /// Public keys only support unhardened wildcards since xpubs cannot derive hardened children.
+    /// If the key already has an unhardened wildcard, it is returned unchanged. Returns an error
+    /// if the key is not a single xpub, or if the key already has a hardened wildcard.
+    pub fn add_wildcard(&self) -> Result<Arc<Self>, DescriptorKeyError> {
+        let descriptor_public_key = &self.0;
+        match descriptor_public_key {
+            BdkDescriptorPublicKey::Single(_) => Err(DescriptorKeyError::InvalidKeyType),
+            BdkDescriptorPublicKey::XPub(descriptor_x_key) => {
+                // If there is a wildcard already present and it's unhardened,
+                // return the same DescriptorPublicKey
+                if descriptor_x_key.wildcard == Wildcard::Unhardened {
+                    let descriptor_public_key_with_wildcard =
+                        BdkDescriptorPublicKey::XPub(DescriptorXKey {
+                            origin: descriptor_x_key.origin.clone(),
+                            xkey: descriptor_x_key.xkey,
+                            derivation_path: descriptor_x_key.derivation_path.clone(),
+                            wildcard: Wildcard::Unhardened,
+                        });
+                    Ok(Arc::new(Self(descriptor_public_key_with_wildcard)))
+                } else if descriptor_x_key.wildcard == Wildcard::None {
+                    // If the descriptor doesn't have a wildcard, add an Unhardened wildcard
+                    let descriptor_public_key_with_wildcard =
+                        BdkDescriptorPublicKey::XPub(DescriptorXKey {
+                            origin: descriptor_x_key.origin.clone(),
+                            xkey: descriptor_x_key.xkey,
+                            derivation_path: descriptor_x_key.derivation_path.clone(),
+                            wildcard: Wildcard::Unhardened,
+                        });
+                    Ok(Arc::new(Self(descriptor_public_key_with_wildcard)))
+                } else {
+                    // If the descriptor already has a wildcard and it's hardened, return an error, because (1) we don't want to allow changing the wildcard, and (2) extended public keys cannot derived hardened children
+                    Err(DescriptorKeyError::CannotChangeWildcardType)
+                }
             }
             BdkDescriptorPublicKey::MultiXPub(_) => Err(DescriptorKeyError::InvalidKeyType),
         }

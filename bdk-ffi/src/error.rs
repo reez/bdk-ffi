@@ -287,6 +287,9 @@ pub enum DescriptorKeyError {
 
     #[error("error bip 32 related: {error_message}")]
     Bip32 { error_message: String },
+
+    #[error("you cannot change a wildcard from hardened to unhardened or the opposite")]
+    CannotChangeWildcardType,
 }
 
 #[derive(Debug, thiserror::Error, uniffi::Error)]

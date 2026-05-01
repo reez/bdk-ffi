@@ -25,6 +25,7 @@ use bdk_wallet::descriptor::policy::{
 };
 use bdk_wallet::locked_outpoints::ChangeSet as BdkLockedOutpointsChangeSet;
 #[allow(deprecated)]
+use bdk_wallet::miniscript::descriptor::Wildcard;
 use bdk_wallet::signer::{SignOptions as BdkSignOptions, TapLeavesOptions};
 use bdk_wallet::AddressInfo as BdkAddressInfo;
 use bdk_wallet::Balance as BdkBalance;
@@ -1459,6 +1460,24 @@ impl From<bdk_wallet::TxDetails> for TxDetails {
             balance_delta: details.balance_delta.to_sat(),
             chain_position: details.chain_position.into(),
             tx: Arc::new(Transaction::from(details.tx.as_ref().clone())),
+        }
+    }
+}
+
+/// Wildcard types for descriptors
+#[derive(uniffi::Enum, PartialEq)]
+pub enum WildcardType {
+    /// Unhardened wildcard, e.g. *
+    Unhardened,
+    /// Hardened wildcard, e.g. *h
+    Hardened,
+}
+
+impl From<WildcardType> for Wildcard {
+    fn from(wildcard_type: WildcardType) -> Self {
+        match wildcard_type {
+            WildcardType::Unhardened => Wildcard::Unhardened,
+            WildcardType::Hardened => Wildcard::Hardened,
         }
     }
 }

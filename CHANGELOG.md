@@ -6,22 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased](https://github.com/bitcoindevkit/bdk-ffi/compare/v2.3.0...HEAD)
 
+## Breaking
+
+- The `DescriptorSecretKey::new` constructor does not produce an extended key with an automatic wildcard anymore [#853]
+- `Descriptor` and `DescriptorSecretKey` constructors now require a `NetworkKind` [#986]
+
 ### Added
 
-- Expose miniscript `has_wildcard` and `sanity_check` methods on `Descriptor` type #945
-- Expose `new_wsh_sortedmulti` and `new_pk` methods on `Descriptor` type #949
-- Expose `new_sh_sortedmulti`, `new_sh_wsh_sortedmulti`, `new_pkh`, `new_wpkh`, `new_sh_wpkh` methods on `Descriptor` type #973
-- Expose wallet event helpers `Wallet::apply_unconfirmed_txs_events` and `Wallet::apply_evicted_txs_events` #971
-- Expose wallet scan/sync helpers `Wallet::start_full_scan_at`, `Wallet::start_sync_with_revealed_spks_at`, and `Wallet::checkpoints` #971
-- Expose locked outpoint wallet APIs and locked outpoint persistence in `ChangeSet` #971
-- Expose transaction builder controls for sighash, transaction ordering, and adding foreign UTXOs with explicit sequence values #971
-- Expose `Persister::get_pre_v1_wallet_keychains` for pre-v1 SQLite wallet migration support #971
-- Expose `NetworkKind` type #986
+- Expose miniscript `has_wildcard` and `sanity_check` methods on `Descriptor` type [#945]
+- Expose `new_wsh_sortedmulti` and `new_pk` methods on `Descriptor` type [#949]
+- Expose `new_sh_sortedmulti`, `new_sh_wsh_sortedmulti`, `new_pkh`, `new_wpkh`, `new_sh_wpkh` methods on `Descriptor` type [#973]
+- Expose wallet event helpers `Wallet::apply_unconfirmed_txs_events` and `Wallet::apply_evicted_txs_events` [#971]
+- Expose wallet scan/sync helpers `Wallet::start_full_scan_at`, `Wallet::start_sync_with_revealed_spks_at`, and `Wallet::checkpoints` [#971]
+- Expose locked outpoint wallet APIs and locked outpoint persistence in `ChangeSet` [#971]
+- Expose transaction builder controls for sighash, transaction ordering, and adding foreign UTXOs with explicit sequence values [#971]
+- Expose `Persister::get_pre_v1_wallet_keychains` for pre-v1 SQLite wallet migration support [#971]
+- Expose `NetworkKind` type [#986]
+- New `WildcardType` enum [#853]
+- New `DescriptorPublicKey::add_wildcard` method, which adds an unhardened wildcard to the derivation path of the descriptor [#853]
+- New `DescriptorSecretKey::add_wildcard(wildcard_type: WildcardType)` method, which adds a wildcard to the derivation path of the descriptor [#853]
 
-### Breaking
-
-- `Descriptor` and `DescriptorSecretKey` constructors now require a `NetworkKind` #986
-
+[#853]: https://github.com/bitcoindevkit/bdk-ffi/pull/853
+[#853]: https://github.com/bitcoindevkit/bdk-ffi/pull/945
+[#853]: https://github.com/bitcoindevkit/bdk-ffi/pull/949
+[#986]: https://github.com/bitcoindevkit/bdk-ffi/pull/971
+[#986]: https://github.com/bitcoindevkit/bdk-ffi/pull/973
 [#986]: https://github.com/bitcoindevkit/bdk-ffi/pull/986
 
 ## [v2.3.0]
