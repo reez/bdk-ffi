@@ -7,11 +7,11 @@ import Darwin
 //
 //final class LiveWalletTests: XCTestCase {
 //    private let descriptor = try! Descriptor(
-//    descriptor: "wpkh(tprv8ZgxMBicQKsPf2qfrEygW6fdYseJDDrVnDv26PH5BHdvSuG6ecCbHqLVof9yZcMoM31z9ur3tTYbSnr1WBqbGX97CbXcmp5H6qeMpyvx35B/84h/1h/1h/0/*)", 
+//    descriptor: "wpkh(tprv8ZgxMBicQKsPf2qfrEygW6fdYseJDDrVnDv26PH5BHdvSuG6ecCbHqLVof9yZcMoM31z9ur3tTYbSnr1WBqbGX97CbXcmp5H6qeMpyvx35B/84h/1h/1h/0/*)",
 //    network: Network.signet
 //    )
 //    private let changeDescriptor = try! Descriptor(
-//        descriptor: "wpkh(tprv8ZgxMBicQKsPf2qfrEygW6fdYseJDDrVnDv26PH5BHdvSuG6ecCbHqLVof9yZcMoM31z9ur3tTYbSnr1WBqbGX97CbXcmp5H6qeMpyvx35B/84h/1h/1h/1/*)", 
+//        descriptor: "wpkh(tprv8ZgxMBicQKsPf2qfrEygW6fdYseJDDrVnDv26PH5BHdvSuG6ecCbHqLVof9yZcMoM31z9ur3tTYbSnr1WBqbGX97CbXcmp5H6qeMpyvx35B/84h/1h/1h/1/*)",
 //        network: Network.signet
 //    )
 //    var dbFilePath: URL!
@@ -73,7 +73,7 @@ import Darwin
 //            print("Received \(sentAndReceived.received.toSat())")
 //        }
 //    }
-//    
+//
 //    func testBroadcastTransaction() throws {
 //        let persister = try Persister.newInMemory()
 //        let wallet = try Wallet(
@@ -91,7 +91,7 @@ import Darwin
 //        )
 //        try wallet.applyUpdate(update: update)
 //        let address = wallet.revealNextAddress(keychain: KeychainKind.external).address.description
-//        
+//
 //        print("testBroadcastTransaction - Before balance assertion. Address: \(address)")
 //        print("testBroadcastTransaction - Before balance assertion. Wallet Balance: \(wallet.balance()))")
 //        print("testBroadcastTransaction - Before balance assertion. Wallet Balance Total To Sat: \(wallet.balance().total.toSat())")

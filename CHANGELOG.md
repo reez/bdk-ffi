@@ -253,7 +253,7 @@ This release updates the `bdk-ffi` libraries to the final `bdk_wallet` `1.0.0` a
 
 ## [v1.0.0-beta.6]
 
-This release updates the `bdk-ffi` libraries to the latest `bdk_wallet` `1.0.0-beta.6` and related libraries (Esplora, Electrum, etc). 
+This release updates the `bdk-ffi` libraries to the latest `bdk_wallet` `1.0.0-beta.6` and related libraries (Esplora, Electrum, etc).
 
 ### Added
 
@@ -291,7 +291,7 @@ This release updates the `bdk-ffi` libraries to the latest `bdk_wallet` `1.0.0-b
 
 ## [v1.0.0-beta.5]
 
-This release updates the bdk-ffi libraries to the latest bdk_wallet 1.0.0-beta.5 and related libraries (Esplora, Electrum, etc.). 
+This release updates the bdk-ffi libraries to the latest bdk_wallet 1.0.0-beta.5 and related libraries (Esplora, Electrum, etc.).
 
 ### Added
 
@@ -315,7 +315,7 @@ This release updates the bdk-ffi libraries to the latest bdk_wallet 1.0.0-beta.5
 ### Changed
 `Wallet`
     - corrected argument name in `reveal_next_address` [#599]
-    
+
 ### Removed
 `TxBuilder`
     - `enable_rbf` [#600]
@@ -626,8 +626,8 @@ This release has a number of new APIs, and adds support for Windows in bdk-jvm.
 - Update BDK to version 0.19.0
   - fixes sqlite-db issue causing wrong balance
   - adds experimental taproot descriptor and PSBT support
-- APIs Removed 
-  - `Wallet.get_new_address()`, returned String, [#137] 
+- APIs Removed
+  - `Wallet.get_new_address()`, returned String, [#137]
   - `Wallet.get_last_unused_address()`, returned String [#137]
 - APIs Added
   - `Wallet.get_address(AddressIndex)`, returns `AddressInfo` [#137]
@@ -641,7 +641,7 @@ This release has a number of new APIs, and adds support for Windows in bdk-jvm.
 
 - Update BDK to version 0.18.0
 - Add BumpFeeTxBuilder to bump the fee on an unconfirmed tx created by the Wallet
-- Change TxBuilder.build() to TxBuilder.finish() to align with bdk function name 
+- Change TxBuilder.build() to TxBuilder.finish() to align with bdk function name
 
 ## [v0.5.0]
 

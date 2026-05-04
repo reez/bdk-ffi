@@ -19,7 +19,7 @@ RESOURCE_DIR_ARMEABI_V7A="armeabi-v7a"
 
 # Move to the Rust library directory
 cd ../bdk-ffi/ || exit
-rustup target add $COMPILATION_TARGET_ARM64_V8A $COMPILATION_TARGET_ARMEABI_V7A $COMPILATION_TARGET_X86_64 
+rustup target add $COMPILATION_TARGET_ARM64_V8A $COMPILATION_TARGET_ARMEABI_V7A $COMPILATION_TARGET_X86_64
 
 # Build the binaries
 # The CC and CARGO_TARGET_<TARGET>_LINUX_ANDROID_LINKER environment variables must be declared on the same line as the cargo build command

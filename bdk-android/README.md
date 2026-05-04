@@ -11,7 +11,7 @@ repositories {
     mavenCentral()
 }
 
-dependencies { 
+dependencies {
     implementation("org.bitcoindevkit:bdk-android:<version>")
 }
 ```
@@ -24,7 +24,7 @@ repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
-dependencies { 
+dependencies {
     implementation("org.bitcoindevkit:bdk-android:<version-SNAPSHOT>")
 }
 ```

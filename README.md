@@ -45,9 +45,9 @@ To add new structs and functions, see the [UniFFI User Guide](https://mozilla.gi
 ## Goals
 
 1. Language bindings should feel idiomatic in target languages/platforms
-2. Adding new targets should be easy 
-3. Getting up and running should be easy 
-4. Contributing should be easy 
+2. Adding new targets should be easy
+3. Getting up and running should be easy
+4. Contributing should be easy
 5. Get it right, then automate
 
 ## Verifying Signatures
@@ -59,10 +59,10 @@ root of this repository. To verify the signatures follow the below steps:
 ```shell
 # Navigate to the root of the repository and import the ./PGP-BDK-BINDINGS.asc public key
 gpg --import ./PGP-BDK-BINDINGS.asc
-    
+
 # Alternatively, you can import the key directly from a public key server
 gpg --keyserver keyserver.ubuntu.com --receive-key 2768C43E8803C6A3
-    
+
 # Verify that the correct key was imported
 gpg --list-keys
 # You should see the below output
@@ -82,7 +82,7 @@ sub   cv25519 2022-08-31 [E]
 
 3. Verify the signatures.
 ```shell
-gpg --verify bdk-jvm-<version>.jar.asc 
+gpg --verify bdk-jvm-<version>.jar.asc
 gpg --verify bdk-android-<version>.aar.asc
 
 # you should see a "Good signature" result
@@ -91,9 +91,9 @@ gpg: Good signature from "bitcoindevkit-bindings <bindings@bitcoindevkit.org>" [
 
 ### PGP Metadata
 
-Full key ID: `88AD 93AC 4589 FD09 0FF3 B8D1 2768 C43E 8803 C6A3`  
-Fingerprint: `2768C43E8803C6A3`  
-Name: `bitcoindevkit-bindings`  
+Full key ID: `88AD 93AC 4589 FD09 0FF3 B8D1 2768 C43E 8803 C6A3`
+Fingerprint: `2768C43E8803C6A3`
+Name: `bitcoindevkit-bindings`
 Email: `bindings@bitcoindevkit.org`
 
 ## Thanks

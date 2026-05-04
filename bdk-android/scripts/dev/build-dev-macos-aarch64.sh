@@ -14,7 +14,7 @@ RESOURCE_DIR_ARM64_V8A="arm64-v8a"
 
 # Move to the Rust library directory
 cd ../bdk-ffi/ || exit
-rustup target add $COMPILATION_TARGET_ARM64_V8A 
+rustup target add $COMPILATION_TARGET_ARM64_V8A
 
 # Build the binaries
 # The CC and CARGO_TARGET_<TARGET>_LINUX_ANDROID_LINKER environment variables must be declared on the same line as the cargo build command

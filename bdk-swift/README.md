@@ -5,9 +5,9 @@ This project builds a Swift package that provides [Swift] language bindings for 
 
 Supported target platforms are:
 
-- macOS, X86_64 and M1 (aarch64)  
-- iOS, iPhones (aarch64)  
-- iOS simulator, X86_64 and M1 (aarch64)  
+- macOS, X86_64 and M1 (aarch64)
+- iOS, iPhones (aarch64)
+- iOS simulator, X86_64 and M1 (aarch64)
 
 ## How to Use
 
@@ -23,7 +23,7 @@ import BitcoinDevKit
 
 ```
 
-Swift Package Manager releases for `bdk-swift` are published to a separate repository (https://github.com/bitcoindevkit/bdk-swift), and that is where the releases are created for it. 
+Swift Package Manager releases for `bdk-swift` are published to a separate repository (https://github.com/bitcoindevkit/bdk-swift), and that is where the releases are created for it.
 
 The `bdk-swift/build-xcframework.sh` script can be used instead to create a version of the project for local testing.
 

@@ -20,7 +20,7 @@ jobs:
     defaults:
       run:
         working-directory: bdk-ffi
-    
+
     steps:
       - name: "Check out PR branch"
         uses: actions/checkout@v4

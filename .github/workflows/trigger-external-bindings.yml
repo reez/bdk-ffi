@@ -18,7 +18,7 @@ jobs:
   trigger:
     name: "Trigger all remote test workflows"
     runs-on: ubuntu-24.04
-    steps:    
+    steps:
       # Trigger trigger-bdk-jvm-test workflow in bdk-jvm repository
       - name: "Trigger tests in bdk-jvm repository"
         env:
@@ -39,7 +39,7 @@ jobs:
           else
             echo "(empty)"
           fi
-          
+
       # Trigger trigger-bdk-python-test workflow in bdk-python repository
       - name: Trigger tests in bdk-python repository
         env:

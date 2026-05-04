@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-**Describe the enhancement**  
+**Describe the enhancement**
 <!-- A clear and concise description of what you would like added or changed. -->
 
-**Use case**  
-<!-- Tell us how you or others will use this new feature or change to an existing feature. --> 
+**Use case**
+<!-- Tell us how you or others will use this new feature or change to an existing feature. -->
 
 **Additional context**
-<!-- Add any other context about the enhancement here. --> 
+<!-- Add any other context about the enhancement here. -->
