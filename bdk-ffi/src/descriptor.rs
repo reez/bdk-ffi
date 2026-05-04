@@ -15,6 +15,7 @@ use bdk_wallet::descriptor::{ExtendedDescriptor, IntoWalletDescriptor};
 use bdk_wallet::keys::DescriptorPublicKey as BdkDescriptorPublicKey;
 use bdk_wallet::keys::{DescriptorSecretKey as BdkDescriptorSecretKey, KeyMap};
 use bdk_wallet::miniscript::descriptor::ConversionError;
+use bdk_wallet::miniscript::Miniscript as BDKMiniscript;
 use bdk_wallet::template::{
     Bip44, Bip44Public, Bip49, Bip49Public, Bip84, Bip84Public, Bip86, Bip86Public,
     DescriptorTemplate,
@@ -474,6 +475,125 @@ impl Descriptor {
                 })
             }
         };
+        let extended_descriptor = ExtendedDescriptor::from(miniscript_descriptor);
+
+        Ok(Self {
+            extended_descriptor,
+            key_map: KeyMap::new(),
+        })
+    }
+
+    /// Create a new wsh descriptor from witness script Errors when miniscript exceeds resource limits
+    /// under p2sh context or does not type check at the top level
+    #[uniffi::constructor]
+    pub fn new_wsh(mini_script: String) -> Result<Self, DescriptorError> {
+        let parsed_miniscript = match BDKMiniscript::from_str(&mini_script) {
+            Ok(miniscript) => miniscript,
+            Err(e) => {
+                return Err(DescriptorError::Miniscript {
+                    error_message: e.to_string(),
+                });
+            }
+        };
+
+        let miniscript_descriptor =
+            match bdk_wallet::miniscript::Descriptor::new_wsh(parsed_miniscript) {
+                Ok(descriptor) => descriptor,
+                Err(e) => {
+                    return Err(DescriptorError::Miniscript {
+                        error_message: e.to_string(),
+                    })
+                }
+            };
+        let extended_descriptor = ExtendedDescriptor::from(miniscript_descriptor);
+
+        Ok(Self {
+            extended_descriptor,
+            key_map: KeyMap::new(),
+        })
+    }
+
+    /// Create a new sh wrapped wsh descriptor with witness script Errors when miniscript exceeds resource limits
+    /// under wsh context or does not type check at the top level
+    #[uniffi::constructor]
+    pub fn new_sh_wsh(mini_script: String) -> Result<Self, DescriptorError> {
+        let parsed_miniscript = match BDKMiniscript::from_str(&mini_script) {
+            Ok(miniscript) => miniscript,
+            Err(e) => {
+                return Err(DescriptorError::Miniscript {
+                    error_message: e.to_string(),
+                });
+            }
+        };
+
+        let miniscript_descriptor =
+            match bdk_wallet::miniscript::Descriptor::new_sh_wsh(parsed_miniscript) {
+                Ok(descriptor) => descriptor,
+                Err(e) => {
+                    return Err(DescriptorError::Miniscript {
+                        error_message: e.to_string(),
+                    })
+                }
+            };
+        let extended_descriptor = ExtendedDescriptor::from(miniscript_descriptor);
+
+        Ok(Self {
+            extended_descriptor,
+            key_map: KeyMap::new(),
+        })
+    }
+
+    /// Create a new sh for a given redeem script Errors when miniscript exceeds resource limits under p2sh context or does not type check at the top level
+    #[uniffi::constructor]
+    pub fn new_sh(mini_script: String) -> Result<Self, DescriptorError> {
+        let parsed_miniscript = match BDKMiniscript::from_str(&mini_script) {
+            Ok(miniscript) => miniscript,
+            Err(e) => {
+                return Err(DescriptorError::Miniscript {
+                    error_message: e.to_string(),
+                });
+            }
+        };
+
+        let miniscript_descriptor =
+            match bdk_wallet::miniscript::Descriptor::new_sh(parsed_miniscript) {
+                Ok(descriptor) => descriptor,
+                Err(e) => {
+                    return Err(DescriptorError::Miniscript {
+                        error_message: e.to_string(),
+                    })
+                }
+            };
+        let extended_descriptor = ExtendedDescriptor::from(miniscript_descriptor);
+
+        Ok(Self {
+            extended_descriptor,
+            key_map: KeyMap::new(),
+        })
+    }
+
+    /// Create a new bare descriptor from witness script Errors when miniscript exceeds resource limits
+    /// under bare context or does not type check at the top level
+    #[uniffi::constructor]
+    pub fn new_bare(mini_script: String) -> Result<Self, DescriptorError> {
+        let parsed_miniscript = match BDKMiniscript::from_str(&mini_script) {
+            Ok(miniscript) => miniscript,
+            Err(e) => {
+                return Err(DescriptorError::Miniscript {
+                    error_message: e.to_string(),
+                });
+            }
+        };
+
+        let miniscript_descriptor =
+            match bdk_wallet::miniscript::Descriptor::new_bare(parsed_miniscript) {
+                Ok(descriptor) => descriptor,
+                Err(e) => {
+                    return Err(DescriptorError::Miniscript {
+                        error_message: e.to_string(),
+                    })
+                }
+            };
         let extended_descriptor = ExtendedDescriptor::from(miniscript_descriptor);
 
         Ok(Self {

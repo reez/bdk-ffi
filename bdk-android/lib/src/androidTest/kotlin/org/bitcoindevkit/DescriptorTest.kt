@@ -74,6 +74,69 @@ class DescriptorTest {
         assertEquals(newShWpkhDescriptor.descType(), DescriptorType.SH_WPKH)
     }
 
+    @Test
+    fun createMiniscriptDescriptors() {
+        val newShDescriptor = Descriptor.newSh("pk(02b4632d08485ff1df2db55b9dafd23347d1c47a457072a1e87be26896549a8737)")
+        val newWshDescriptor = Descriptor.newWsh("pk(02b4632d08485ff1df2db55b9dafd23347d1c47a457072a1e87be26896549a8737)")
+        val newShWshDescriptor = Descriptor.newShWsh("pk(02b4632d08485ff1df2db55b9dafd23347d1c47a457072a1e87be26896549a8737)")
+        val newBareDescriptor = Descriptor.newBare("pk(02b4632d08485ff1df2db55b9dafd23347d1c47a457072a1e87be26896549a8737)")
+
+        assertEquals(newShDescriptor.descType(), DescriptorType.SH)
+        assertEquals(newWshDescriptor.descType(), DescriptorType.WSH)
+        assertEquals(newShWshDescriptor.descType(), DescriptorType.SH_WSH)
+        assertEquals(newBareDescriptor.descType(), DescriptorType.BARE)
+    }
+
+    @Test
+    fun miniscriptConstructorsRejectInvalidExpressions() {
+        val invalid = "not_a_valid_miniscript"
+
+        assertFailsWith<DescriptorException.Miniscript> { Descriptor.newWsh(invalid) }
+        assertFailsWith<DescriptorException.Miniscript> { Descriptor.newSh(invalid) }
+        assertFailsWith<DescriptorException.Miniscript> { Descriptor.newShWsh(invalid) }
+        assertFailsWith<DescriptorException.Miniscript> { Descriptor.newBare(invalid) }
+    }
+
+    // BareCtx only allows pk(), pkh(), and multi(k<=3,...) at the top level. A timelock
+    // conjunction is valid miniscript for new_wsh but is rejected by new_bare.
+    @Test
+    fun notAllMiniscriptsWorkEverywhere() {
+        val compressedPk = "02b4632d08485ff1df2db55b9dafd23347d1c47a457072a1e87be26896549a8737"
+        val timelockConjunction = "and_v(v:pk($compressedPk),after(1000))"
+
+        // println("Complex miniscript: $timelockConjunction")
+        // println("Resulting descriptor: ${Descriptor.newWsh(timelockConjunction)}")
+
+        // Can do
+        Descriptor.newSh(timelockConjunction)
+        Descriptor.newWsh(timelockConjunction)
+
+        // No can do
+        assertFailsWith<DescriptorException.Miniscript> {
+            Descriptor.newBare(timelockConjunction)
+            Descriptor.newWpkh(timelockConjunction)
+            Descriptor.newWsh(timelockConjunction)
+            Descriptor.newPkh(timelockConjunction)
+        }
+    }
+
+    // Segwitv0 (new_wsh) requires all keys to be compressed. An uncompressed key is valid
+    // in Legacy context (new_sh) but rejected by new_wsh.
+    @Test
+    fun newWshRejectsUncompressedKey() {
+        // Satoshi's genesis block public key — a well-known uncompressed key.
+        val uncompressedPk = "04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f"
+        val expression = "pk($uncompressedPk)"
+
+        // Can do
+        Descriptor.newSh(expression)
+
+        // No can do
+        assertFailsWith<DescriptorException.Miniscript> {
+            Descriptor.newWsh(expression)
+        }
+    }
+
     // Cannot create addr() descriptor.
     @Test
     fun cannotCreateAddrDescriptor() {
