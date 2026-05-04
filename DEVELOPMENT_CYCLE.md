@@ -30,6 +30,14 @@ properly.
 To create a new release a release manager will create a new issue using a `Release` template and
 follow the template instructions.
 
+Pull requests declare changelog intent with exactly one `changelog:*` label. The labels map to
+[Keep a Changelog] categories where possible: use `changelog: added`, `changelog: changed`,
+`changelog: fixed`, or `changelog: breaking` for user-facing release notes, and
+`changelog: none` for changes that should not appear in the changelog. Release managers use
+GitHub's generated release notes, review the wording, and commit the final changelog update during
+the release.
+
 [used by the Rust language]: https://doc.rust-lang.org/book/appendix-07-nightly-rust.html
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/
 [`bdk`]: https://github.com/bitcoindevkit/bdk

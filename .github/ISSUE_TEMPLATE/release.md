@@ -42,24 +42,24 @@ just test
 
 9. - [ ] Update the Android and Swift libraries as per the _Part 2_ section above. Open a single PR on `master` for all of these changes called `Prepare language bindings libraries for 0.X release`. See [example PR here](https://github.com/bitcoindevkit/bdk-ffi/pull/315).
 10. - [ ] Create a new branch off of `master` called `release/<feature version>`, e.g. `release/1.2`
-11. - [ ] Update the bdk-android version from a `SNAPSHOT` version to a release version (`2.4.0-SNAPSHOT` -> `2.4.0` and the Rust library version in `Cargo.toml` from an alpha a release version (`2.4.0-alpha.0` -> `2.4.0`), and open a PR to the release branch that updates these versions.
-12. - [ ] Get a review and ACK and merge this PR on the release branch.
-13. - [ ] Create the tag for the release and make sure to add the changelog info to the tag (works better if you prepare the tag message on the side in a text editor). Push the tag to GitHub.
+11. - [ ] Generate release notes with GitHub's built-in release note generator, using the previous release tag as the previous tag and the release branch as the target. Review the generated notes and prepare the final changelog text on the side in a text editor.
+12. - [ ] Update the bdk-android version from a `SNAPSHOT` version to a release version (`2.4.0-SNAPSHOT` -> `2.4.0`), update the Rust library version in `Cargo.toml` from an alpha to a release version (`2.4.0-alpha.0` -> `2.4.0`), add the reviewed release notes to the changelog file, and open a PR to the release branch with these changes.
+13. - [ ] Get a review and ACK and merge this PR on the release branch.
+14. - [ ] Create the tag for the release and make sure to add the reviewed changelog info to the tag. Push the tag to GitHub.
 ```shell
 git tag v0.6.0 --sign --edit
 git push upstream v0.6.0
 ```
-14. - [ ] Trigger manual releases for both libraries (for Swift, go to the [bdk-swift](https://github.com/bitcoindevkit/bdk-swift) repository and trigger the workflow using `master`. Simply add the version number and tag name in the text fields when running the workflow manually. Note that the version number must not contain the `v`, i.e. `0.26.0`, but the tag will have it, i.e. `v0.26.0`). For Android, trigger the release workflow using the tag (not a branch).
-15. - [ ] Make sure the released libraries work and contain the artifacts you would expect.
-16. - [ ] Build the Rust API docs and publish them to the repo's GitHub Pages.
+15. - [ ] Trigger manual releases for both libraries (for Swift, go to the [bdk-swift](https://github.com/bitcoindevkit/bdk-swift) repository and trigger the workflow using `master`. Simply add the version number and tag name in the text fields when running the workflow manually. Note that the version number must not contain the `v`, i.e. `0.26.0`, but the tag will have it, i.e. `v0.26.0`). For Android, trigger the release workflow using the tag (not a branch).
+16. - [ ] Make sure the released libraries work and contain the artifacts you would expect.
+17. - [ ] Build the Rust API docs and publish them to the repo's GitHub Pages.
 ```shell
 cd bdk-ffi/
 just docs
 ```
-17. - [ ] Aggregate all the changelog notices from the PRs and add them to the changelog file. PR that.
 18. - [ ] Bump the version on master from `1.1.0-SNAPSHOT` to `1.2.0-SNAPSHOT` (Android) and `1.1.0-alpha.0` to `1.2.0-alpha.0` (Rust).
 19. - [ ] Apply changes to the release issue template if needed.
-20. - [ ] Make release on GitHub (generate auto release notes between the previous tag and the new one).
+20. - [ ] Make release on GitHub using the reviewed release notes.
 21. - [ ] Build API docs for Android locally and PR the website to the bitcoindevkit.org repo.
 22. - [ ] Post in the announcement channel.
 23. - [ ] Tweet about the new release!

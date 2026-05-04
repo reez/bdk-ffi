@@ -20,6 +20,14 @@ of the PR were done in a specific way -->
 - [ ] [`uniffi`](https://github.com/mozilla/uniffi-rs) <!-- Add a link below with the version changelog or any other docs. -->
 - [ ] Other: <!-- Add a link below with additional references -->
 
+### Changelog
+
+<!-- Add exactly one changelog label to this PR:
+`changelog: added`, `changelog: changed`, `changelog: fixed`, `changelog: breaking`, or `changelog: none`.
+These labels map to the Keep a Changelog categories used by `CHANGELOG.md` where possible.
+GitHub generated release notes use the label plus the PR title to draft the changelog.
+-->
+
 ### Checklists
 
 #### All Submissions:
@@ -27,7 +35,7 @@ of the PR were done in a specific way -->
 * [ ] I've signed all my commits
 * [ ] I followed the [contribution guidelines](https://github.com/bitcoindevkit/bdk/blob/master/CONTRIBUTING.md)
 * [ ] I ran `cargo fmt` and `cargo clippy` before committing
-* [ ] I've added a changelog in the next release tracking issue (see [example](https://github.com/bitcoindevkit/bdk-ffi/issues/875))
+* [ ] I've added exactly one `changelog:*` label
 * [ ] I've linked the relevant upstream docs or specs above
 
 #### New Features:
