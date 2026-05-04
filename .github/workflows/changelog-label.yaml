@@ -1,0 +1,58 @@
+name: Changelog Label
+
+# Enforces that every pull request declares how it should appear in release notes.
+# Repository branch protection should require this workflow before merging.
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+      - ready_for_review
+
+permissions: {}
+
+jobs:
+  check:
+    name: "Require changelog label"
+    runs-on: ubuntu-24.04
+    steps:
+      - name: "Check changelog label"
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import sys
+
+          allowed = {
+              "changelog: added",
+              "changelog: changed",
+              "changelog: fixed",
+              "changelog: breaking",
+              "changelog: none",
+          }
+
+          labels = json.loads(os.environ["LABELS"])
+          changelog_labels = [
+              label for label in labels if label.startswith("changelog:")
+          ]
+
+          if len(changelog_labels) != 1:
+              print("Expected exactly one changelog label.")
+              print(f"Found: {changelog_labels}")
+              print(f"Allowed labels: {sorted(allowed)}")
+              sys.exit(1)
+
+          label = changelog_labels[0]
+          if label not in allowed:
+              print(f"Invalid changelog label: {label}")
+              print(f"Allowed labels: {sorted(allowed)}")
+              sys.exit(1)
+
+          print(f"Changelog label OK: {label}")
+          PY

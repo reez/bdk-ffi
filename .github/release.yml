@@ -1,0 +1,20 @@
+changelog:
+  exclude:
+    labels:
+      - "changelog: none"
+  categories:
+    - title: "Breaking Changes"
+      labels:
+        - "changelog: breaking"
+    - title: "Added"
+      labels:
+        - "changelog: added"
+    - title: "Changed"
+      labels:
+        - "changelog: changed"
+    - title: "Fixed"
+      labels:
+        - "changelog: fixed"
+    - title: "Needs Label Review"
+      labels:
+        - "*"
