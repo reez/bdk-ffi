@@ -27,6 +27,7 @@ The `bdk-ffi` codebase in this repository can be used to produce language bindin
 | Kotlin   | JVM                   | [bdk-jvm (Maven Central)] | [bdk-jvm]    |                       |
 | Python   | Linux, macOS, Windows | [bdk-python (PyPI)]       | [bdk-python] |                       |
 | Dart     | Android, iOS, macOS, Linux, Windows |                   | [bdk-dart]   |                       |
+| TypeScript | React Native (Android, iOS) |                   | [bdk-rn]     |                       |
 
 ## Building and testing the libraries
 
@@ -108,6 +109,7 @@ This project is made possible thanks to the wonderful work by the [mozilla/uniff
 [bdk-python]: https://github.com/bitcoindevkit/bdk-python
 [bdk-python (PyPI)]: https://pypi.org/project/bdk-python
 [bdk-dart]: https://github.com/bitcoindevkit/bdk-dart
+[bdk-rn]: https://github.com/bitcoindevkit/bdk-rn
 [mozilla/uniffi-rs]: https://github.com/mozilla/uniffi-rs
 [bdk_wallet]: https://github.com/bitcoindevkit/bdk_wallet
 [Bitcoin Dev Kit]: https://github.com/bitcoindevkit
