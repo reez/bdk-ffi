@@ -104,6 +104,7 @@ pub struct CbfBuilder {
     scan_type: ScanType,
     socks5_proxy: Option<Socks5Proxy>,
     peers: Vec<Peer>,
+    whitelist_only: bool,
 }
 
 #[allow(clippy::new_without_default)]
@@ -120,6 +121,7 @@ impl CbfBuilder {
             scan_type: ScanType::default(),
             socks5_proxy: None,
             peers: Vec::new(),
+            whitelist_only: false,
         }
     }
 
@@ -173,6 +175,15 @@ impl CbfBuilder {
     pub fn socks5_proxy(&self, proxy: Socks5Proxy) -> Arc<Self> {
         Arc::new(CbfBuilder {
             socks5_proxy: Some(proxy),
+            ..self.clone()
+        })
+    }
+
+    /// When set, only connect to peers configured at build time. This will skip DNS and will not
+    /// use gossiped nodes.
+    pub fn only_configured_peers(&self) -> Arc<Self> {
+        Arc::new(CbfBuilder {
+            whitelist_only: true,
             ..self.clone()
         })
     }
@@ -239,6 +250,10 @@ impl CbfBuilder {
             let port = proxy.port;
             let addr = proxy.address.inner;
             builder = builder.socks5_proxy(SocketAddr::new(addr, port));
+        }
+
+        if self.whitelist_only {
+            builder = builder.whitelist_only();
         }
 
         let (client, logging, update_subscriber) = builder
